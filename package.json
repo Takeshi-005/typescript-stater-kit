@@ -1,0 +1,34 @@
+{
+  "name": "typescript-starter-kit",
+  "version": "1.0.0",
+  "description": "typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Takeshi-005/typescript-stater-kit.git"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": "Takeshi Odaka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Takeshi-005/typescript-stater-kit/issues"
+  },
+  "homepage": "https://github.com/Takeshi-005/typescript-stater-kit#readme",
+  "devDependencies": {
+    "@typescript-eslint/parser": "^1.4.2",
+    "eslint": "^5.14.1",
+    "prettier": "^1.16.4",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^3.0.0"
+  }
+}
