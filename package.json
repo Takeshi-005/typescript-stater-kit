@@ -4,7 +4,10 @@
   "description": "typescript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "webpack --mode production ",
+    "dev": "webpack --mode development",
+    "lint": "eslint \"./src/js/**/*.ts\" --quiet --fix; exit 0"
   },
   "repository": {
     "type": "git",
@@ -20,15 +23,36 @@
   },
   "homepage": "https://github.com/Takeshi-005/typescript-stater-kit#readme",
   "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "@types/node": "^11.10.4",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
+    "autoprefixer": "9.4.10",
+    "css-loader": "2.1.0",
+    "es6-promise": "4.2.6",
     "eslint": "^5.14.1",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "extract-text-webpack-plugin": "3.0.2",
+    "file-loader": "3.0.1",
+    "jest": "^24.1.0",
+    "node-sass": "4.11.0",
+    "postcss-loader": "3.0.0",
     "prettier": "^1.16.4",
+    "pug-loader": "^2.4.0",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
+    "uglifyjs-webpack-plugin": "2.1.2",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "3.2.1"
   },
   "dependencies": {
+    "@types/jquery": "3.3.29",
+    "jquery": "^3.3.1",
+    "slick-carousel": "1.8.1",
     "whatwg-fetch": "^3.0.0"
   }
 }
