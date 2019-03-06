@@ -33,8 +33,14 @@ module.exports = (env, argv) => {
       rules: [
         // typescript
         {
-          test: /\.ts[x]?$/,
-          use: 'ts-loader',
+          test: /\.tsx?$/,
+          use: [
+            // !isProduction && {
+            //   loader: "babel-loader"
+            //   // options: { plugins: ["react-hot-loader/babel"] }
+            // },
+            "ts-loader"
+          ].filter(Boolean),
           exclude: /node_modules/
         },
         {
@@ -88,7 +94,18 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
-      extractTextPlugin
-    ]
+      extractTextPlugin,
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+      }),
+      isProduction && new StatsPlugin('../../../stats.json', {
+        chunkModules: true,
+      }),
+      isProduction && new BundleAnalyzerPlugin(),
+    ].filter(Boolean),
+    performance: {
+      maxEntrypointSize: 400000
+    }
   }
 };
