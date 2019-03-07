@@ -1,127 +1,124 @@
-import InputModel from './InputModel';
-import returnInput from './returnInput';
+import returnInput from "./returnInput";
+import inputModel from "./inputModel";
+import * as Velocity from "velocity-animate";
+import { ANIMATE_DURATION } from "../../const";
+
 /**
- * validateの[view]classを実装
+ * validateの[view]Classを実装
  * this.$inputにinputModeで使用するruleと同じclassを付与
+ * data-module="form-validation"の子要素の[data-validate]の値に
+ * バリデーションのトリガーを配列で設定する
+ * 設定可能種類は
+ * required 必須項目 submit時にチェックします。
+ * tel 0-9の半角数字を9桁から12桁
+ * email 詳細は"inputModel.ts"の正規表現を確認
+ * number 半角数字のみ
+ *
  */
-export default class ValidateInput {
-  private $el: JQuery;
-  private 
-  private constructor(el:HTMLElement) {
-    this.$el = $(el);
+export default class Validation {
+  private Validates: NodeListOf<Element>;
+  private model: inputModel;
 
-    this.$input = this.$el.find('.js-validate-input');
-    this.$select = this.$el.find('.js-validate-select');
-    this.$error = this.$el.find('.js-validate-error');
-    this.$submit = $('.js-validate-submit');
-    this.$prohibitedInput = this.$el.find('.js-validate-no-paste');
+  private constructor(private el: HTMLElement) {
+    this.Validates = el.querySelectorAll("[data-validate]");
+    this.model = new inputModel();
+    const submit = el.querySelector(".js-validate-submit");
+    const len = this.Validates.length;
 
-    this.init();
+    // 各入力フォームのEvent
+    for (let i = 0; i < len; i++) {
+      const elem = this.Validates[i];
+      const attr = elem.getAttribute("data-validate");
+      const dataProps = JSON.parse(attr);
+      let $target;
+
+      if ($(elem).find("input")[0] !== undefined) {
+        $target = $(elem).find("input")
+      }
+      if ($(elem).find("select")[0] !== undefined) {
+        $target = $(elem).find("select")
+      }
+
+      $target.on("keyup change", (e) => {
+        if (!elem.classList.contains("is-error") && e.type === "keyup") {
+          return;
+        }
+        this.handleChange(elem, dataProps, e.type, $(e.currentTarget))
+      });
+    }
+
+    // submitのEvent
+    if (submit) {
+      submit.addEventListener("click", e => {
+        e.preventDefault();
+        this.el.classList.remove("is-error");
+
+        for (let i = 0; i < len; i++) {
+          const elem = this.Validates[i];
+          const attr = elem.getAttribute("data-validate");
+          const target = elem.querySelector("input") || elem.querySelector("select");
+          const dataProps = JSON.parse(attr);
+          let $target;
+
+          if ($(elem).find("input")[0] !== undefined) {
+            $target = $(elem).find("input")
+          }
+          if ($(elem).find("select")[0] !== undefined) {
+            $target = $(elem).find("select")
+          }
+
+          this.handleChange(elem, dataProps, "submit", $target);
+        }
+      });
+    }
+
     this.eventBind();
   }
 
-  init() {
-    if(this.$input[0] !== undefined) {
-      this.model = new InputModel(this.$input)
+  private eventBind() {
+    // バリデーションエラー解除
+    this.model.on("valid", () => {
+      if (!this.model.target.element.classList.contains("is-error")) return;
+      this.model.target.element.classList.remove("is-error");
+      this.model.target.element.querySelector(".c-validate-error").remove();
+    });
+
+    // バリデーションエラー
+    this.model.on("invalid", () => {
+      const element = this.model.target.element;
+
+      // サブミット時のバリデーションエラー
+      if (this.model.target.event.includes("submit") && !this.el.classList.contains("is-error")) {
+        this.el.classList.add("is-error")
+        Velocity.animate(this.el, "scroll", {
+          duration: ANIMATE_DURATION,
+        }).then(() => {
+
+        });
+      }
+
+      // すでにエラー表示が出ている場合は処理を抜ける
+      if (element.classList.contains("is-error")) {return;}
+
+      element.classList.add("is-error");
+      for (let i = 0; i < this.model.errors.length; i++) {
+        let elem = document.createElement("p");
+        elem.setAttribute("class", "c-validate-error");
+        elem.innerText = this.model.message[this.model.errors[i]];
+
+        element.appendChild(elem);
+      }
+    });
+  }
+
+  private handleChange(elem, props, event, $target) {
+    let val;
+
+    if( $target[0].tagName === "INPUT") {
+      val = returnInput($target);
+    } else {
+      val = $target[0].options[$target[0].selectedIndex].value
     }
-
-    if(this.$select[0] !== undefined) {
-      this.model = new InputModel(this.$select)
-    }
-  }
-
-  /**
-   * Eventを登録
-   */
-  eventBind() {
-    // フォーカスアウト時
-    this.$input.on('blur change', (e) => {
-      this.onBlur(e);
-    });
-
-    // 生年月日
-    this.$select.on('change', (e) => {
-      this.onChange();
-    });
-
-    this.$submit.on('click', (e) => {
-      e.preventDefault();
-      this.onClick(e);
-    });
-
-
-    this.$prohibitedInput.on('paste', (e) => {
-      return false;
-    })
-
-
-
-    this.model.on('valid', () => {
-      this.onValid();
-    });
-
-    this.model.on('invalid', () => {
-      this.onInvalid();
-    });
-
-    this.model.on('submit', () => {
-      this.onSubmit();
-    });
-  }
-
-  // フォーカスアウト時のイベント
-  onBlur(e) {
-    const $target = $(e.currentTarget).closest('.js-validate');
-    const val = returnInput($target);
-    this.model.set(val, e.currentTarget);
-  }
-
-  // selectチェンジイベント
-  onChange(e) {
-    let date = [];
-    this.$select.each( function() {
-        date.push($(this).val());
-    });
-
-    this.model.set(date)
-  }
-
-  // サブミット時のイベント
-  onClick(e) {
-    const $target = this.$el;
-    if($target.hasClass('js-validate-required')) {
-      const val = returnInput($target);
-
-      this.model.set(val, e.currentTarget)
-      this.model.setSubmit();
-    }
-  }
-
-  // バリデートエラーを解除
-  onValid() {
-    this.$input.removeClass('is-error');
-    this.$select.removeClass('is-error');
-    this.$error
-      .removeClass('is-active')
-      .text('');
-  }
-
-  // バリデートエラー
-  onInvalid() {
-    this.message = this.model.message;
-    this.$input.addClass('is-error');
-    this.$select.addClass('is-error');
-    this.$error.addClass('is-active');
-
-    $.each(this.model.errors, (index, val) => {
-      const message = this.message[val];
-      this.$error.text(message);
-    })
-  }
-
-  // ページ遷移を許可
-  onSubmit() {
-    const url = this.$submit[0].getAttribute('href');
-    location.href = url;
+    this.model.set(val, elem, props, event);
   }
 }
