@@ -1,42 +1,26 @@
 /**
  * input[type]によってvalueの取得方法を変更
- * @param  {Object}    inputのwrap要素
+ * @param  {HTMLInputElement}
  * @return {value}     input要素のvalue
  */
-export default function($el) {
-  const $input = $el.find('.js-validate-input');
-  const type = $input.attr('type');
+export default function($target: JQuery) {
+  const type = $target.attr("type");
+  let val;
 
-  let val = '';
-
-  // checkboxのvalue
+  // checkboxのvalue 1つのみ取得
   if(type === 'checkbox') {
-    // val = [];
-    $input.each((index, element) => {
-      if(!$(element).prop('checked')) {
-        val = 'off';
-      }
-    });
-    if(val === 'off') {
-      val = '';
-    } else {
-      val = 'on';
-    }
+    let name = $target.attr("name");
+    val = $(`input[name=${name}]:checked`).val() || "";
   }
 
-  // radioのvalue
   if(type === 'radio') {
-    $input.each((index, element) => {
-      if($(element).prop('checked')) {
-        val = $input.val();
-      }
-    });
+    let name = $target.attr("name");
+    val = $(`input[name=${name}]:checked`).val() || "";
   }
 
-  // text or tel のvalue
-  if(type === 'text' || type === 'tel') {
-    val = $input.val();
+  // text or tel or password のvalue
+  if (type === "text" || type === "tel" || type === "password") {
+    val = $target.val();
   }
-
   return val;
 }
