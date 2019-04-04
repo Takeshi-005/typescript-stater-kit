@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
     // mode,
     // devtool: "inline-source-map",
     entry: {
-        common: "./src/js/app.ts"
+      common: "./src/js/app.ts"
     },
     output: {
       filename: "[name].js",
@@ -35,10 +35,6 @@ module.exports = (env, argv) => {
         {
           test: /\.tsx?$/,
           use: [
-            // !isProduction && {
-            //   loader: "babel-loader"
-            //   // options: { plugins: ["react-hot-loader/babel"] }
-            // },
             "ts-loader"
           ].filter(Boolean),
           exclude: /node_modules/
