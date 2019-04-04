@@ -1,0 +1,12 @@
+extend _template
+
+block vars
+  - title = 'xxx'
+  - description = 'xxx'
+  - keywords = 'xxx'
+  - img = 'http://localhost:3010/assets/images/share/ogp.jpg'
+  - url = 'http://localhost:3010'
+
+block main
+  div(data-module='dummy' data-options='{"speak": "Hey"}')= say
+  div(data-module='dummy dummy2' data-options='{"dummy": {"speak": "Hey"}, "dummy2": {"spaek": "Wow"}}')= name
