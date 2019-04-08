@@ -11,17 +11,17 @@
     "precommit": "npm run lint"
   },
   "lint-staged": {
-    "*.{ts}": [
-      "npm run lint",
-      "git add"
-    ]
+    "linters": {
+      "*.{ts}": [
+        "npm run lint",
+        "git add"
+      ]
+    }
   },
-  {
-    "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged",
-        "pre-push": "npm test",
-      }
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
     }
   },
   "repository": {
