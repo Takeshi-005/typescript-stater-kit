@@ -97,7 +97,7 @@ export default class InputModel {
 
   // 半角数字のバリデートチェック
   private number(rule, key) {
-    if (this.val === "") return;
+              if (this.val === "") return;
 
     if (this.dataProps.includes(key)) {
       if (this.target.event.includes("change")) {
