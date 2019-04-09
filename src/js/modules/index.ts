@@ -10,12 +10,12 @@ Array.prototype.forEach.call(
     const opts = element.getAttribute("data-options") || null;
 
     keys.forEach(key => {
-      const Module = require(`./${key}`).default;
-      const options = opts
-        ? keys.length > 1
-          ? JSON.parse(opts)[key]
-            : JSON.parse(opts)
-        : {};
+        const Module = require(`./${key}`).default;
+        const options = opts
+          ? keys.length > 1
+            ? JSON.parse(opts)[key]
+              : JSON.parse(opts)
+          : {}
 
       if (Module !== void 0) return new Module(element, options);
     });
