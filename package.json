@@ -13,7 +13,7 @@
   "lint-staged": {
     "linters": {
       "*.{ts}": [
-        "eslint --quiet --fix; exit 0",
+        "eslint --quiet --fix",
         "git add"
       ]
     }
