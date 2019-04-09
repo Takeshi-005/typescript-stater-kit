@@ -9,7 +9,7 @@ Array.prototype.forEach.call(
     const keys = element.getAttribute("data-module").split(/\s+/);
     const opts = element.getAttribute("data-options") || null;
 
-    // keys.forEach(key => {
+    keys.forEach(key => {
       const Module = require(`./${key}`).default;
       const options = opts
         ? keys.length > 1

@@ -18,8 +18,10 @@ import { ANIMATE_DURATION } from "../../const";
 export default class Validation {
   private Validates: NodeListOf<Element>;
   private model: inputModel;
+  private el: HTMLElement;
 
-  private constructor(private el: HTMLElement) {
+  private constructor(el) {
+    this.el = el;
     this.Validates = el.querySelectorAll("[data-validate]");
     this.model = new inputModel();
     const submit = el.querySelector(".js-validate-submit");
@@ -56,8 +58,7 @@ export default class Validation {
         for (let i = 0; i < len; i++) {
           const elem = this.Validates[i];
           const attr = elem.getAttribute("data-validate");
-          const target =
-            elem.querySelector("input") || elem.querySelector("select");
+          // const target = elem.querySelector("input") || elem.querySelector("select");
           const dataProps = JSON.parse(attr);
           let $target;
 

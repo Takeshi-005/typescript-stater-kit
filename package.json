@@ -8,11 +8,11 @@
     "prod": "webpack --mode production ",
     "dev": "webpack --mode development",
     "lint": "eslint \"./src/js/**/*.ts\" --quiet --fix; exit 0",
-    "precommit": "npm run lint"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "linters": {
-      "*.{ts}": [
+      "*.{ts,tsx}": [
         "eslint --quiet --fix",
         "git add"
       ]
@@ -71,6 +71,7 @@
     "lint-staged": "8.1.5",
     "mdn-polyfills": "5.16.0",
     "slick-carousel": "1.8.1",
+    "velocity-animate": "1.5.2",
     "whatwg-fetch": "^3.0.0"
   }
 }
