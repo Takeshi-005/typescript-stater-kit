@@ -8,12 +8,12 @@ export default function($target: JQuery) {
   let val;
 
   // checkboxのvalue 1つのみ取得
-  if(type === 'checkbox') {
+  if (type === "checkbox") {
     let name = $target.attr("name");
     val = $(`input[name=${name}]:checked`).val() || "";
   }
 
-  if(type === 'radio') {
+  if (type === "radio") {
     let name = $target.attr("name");
     val = $(`input[name=${name}]:checked`).val() || "";
   }

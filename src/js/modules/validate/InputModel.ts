@@ -18,7 +18,7 @@ export default class InputModel {
     this.listeners = {
       valid: [],
       invalid: [],
-      submitInvalid: [],
+      submitInvalid: []
     };
 
     this.attrs = {
@@ -33,7 +33,7 @@ export default class InputModel {
       email: "使用可能な文字で入力してください。",
       tel: "半角の数字で正しく入力してください。",
       number: "半角数字で入力してください。",
-      required: "入力してください。",
+      required: "入力してください。"
     };
   }
 
@@ -97,7 +97,7 @@ export default class InputModel {
 
   // 半角数字のバリデートチェック
   private number(rule, key) {
-              if (this.val === "") return;
+    if (this.val === "") return;
 
     if (this.dataProps.includes(key)) {
       if (this.target.event.includes("change")) {
@@ -111,7 +111,6 @@ export default class InputModel {
       }
     }
   }
-
 
   // 必須項目のチェック
   // サブミット時のみ

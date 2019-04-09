@@ -33,17 +33,17 @@ export default class Validation {
       let $target;
 
       if ($(elem).find("input")[0] !== undefined) {
-        $target = $(elem).find("input")
+        $target = $(elem).find("input");
       }
       if ($(elem).find("select")[0] !== undefined) {
-        $target = $(elem).find("select")
+        $target = $(elem).find("select");
       }
 
-      $target.on("keyup change", (e) => {
+      $target.on("keyup change", e => {
         if (!elem.classList.contains("is-error") && e.type === "keyup") {
           return;
         }
-        this.handleChange(elem, dataProps, e.type, $(e.currentTarget))
+        this.handleChange(elem, dataProps, e.type, $(e.currentTarget));
       });
     }
 
@@ -56,15 +56,16 @@ export default class Validation {
         for (let i = 0; i < len; i++) {
           const elem = this.Validates[i];
           const attr = elem.getAttribute("data-validate");
-          const target = elem.querySelector("input") || elem.querySelector("select");
+          const target =
+            elem.querySelector("input") || elem.querySelector("select");
           const dataProps = JSON.parse(attr);
           let $target;
 
           if ($(elem).find("input")[0] !== undefined) {
-            $target = $(elem).find("input")
+            $target = $(elem).find("input");
           }
           if ($(elem).find("select")[0] !== undefined) {
-            $target = $(elem).find("select")
+            $target = $(elem).find("select");
           }
 
           this.handleChange(elem, dataProps, "submit", $target);
@@ -88,17 +89,20 @@ export default class Validation {
       const element = this.model.target.element;
 
       // サブミット時のバリデーションエラー
-      if (this.model.target.event.includes("submit") && !this.el.classList.contains("is-error")) {
-        this.el.classList.add("is-error")
+      if (
+        this.model.target.event.includes("submit") &&
+        !this.el.classList.contains("is-error")
+      ) {
+        this.el.classList.add("is-error");
         Velocity.animate(this.el, "scroll", {
-          duration: ANIMATE_DURATION,
-        }).then(() => {
-
-        });
+          duration: ANIMATE_DURATION
+        }).then(() => {});
       }
 
       // すでにエラー表示が出ている場合は処理を抜ける
-      if (element.classList.contains("is-error")) {return;}
+      if (element.classList.contains("is-error")) {
+        return;
+      }
 
       element.classList.add("is-error");
       for (let i = 0; i < this.model.errors.length; i++) {
@@ -114,10 +118,10 @@ export default class Validation {
   private handleChange(elem, props, event, $target) {
     let val;
 
-    if( $target[0].tagName === "INPUT") {
+    if ($target[0].tagName === "INPUT") {
       val = returnInput($target);
     } else {
-      val = $target[0].options[$target[0].selectedIndex].value
+      val = $target[0].options[$target[0].selectedIndex].value;
     }
     this.model.set(val, elem, props, event);
   }
