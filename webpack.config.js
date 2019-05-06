@@ -1,6 +1,12 @@
 // const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const extractTextPlugin = new ExtractTextPlugin('css/style.css');
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const extractTextPlugin = new ExtractTextPlugin('css/style.css');
+const webpack = require('webpack');
+const StatsPlugin = require('stats-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
 module.exports = (env, argv) => {
@@ -19,6 +25,9 @@ module.exports = (env, argv) => {
     // devtool: "inline-source-map",
     entry: {
       common: "./src/js/app.ts"
+    },
+    optimization: {
+      minimizer: [new TerserPlugin({}), new OptimizeCSSAssetsPlugin({})],
     },
     output: {
       filename: "[name].js",
@@ -40,42 +49,22 @@ module.exports = (env, argv) => {
           exclude: /node_modules/
         },
         {
-          test: /\.(sass|scss)$/,
-          use: ExtractTextPlugin.extract({
+            test: /\.css$/,
+            use: [MiniCssExtractPlugin.loader, "css-loader", 'postcss-loader']
+        },
+        {
+            test: /\.(sass|scss)$/,
             use: [
-              // CSSをバンドルするための機能
               {
-                loader: "css-loader",
+                loader: MiniCssExtractPlugin.loader,
                 options: {
-                  url: false, // CSS内のurl()メソッドの取り込みを禁止する
-                  minimize: mode, 
-                  sourceMap: true,
-                  // Sass+PostCSSの場合は2を指定
-                  importLoaders: 2
-                }
+                  hmr: process.env.NODE_ENV === 'development',
+                },
               },
-              // PostCSSのための設定
-              {
-                loader: "postcss-loader",
-                options: {
-                  sourceMap: true, // PostCSS側でもソースマップを有効にする
-                  plugins: [
-                    // Autoprefixerを有効化
-                    // ベンダープレフィックスを自動付与する
-                    require('autoprefixer')({grid: true})
-                  ]
-                }
-              },
-              // Sassをバンドルするための機能
-              {
-                loader: "sass-loader",
-                options: {
-                  // ソースマップの利用有無
-                  sourceMap: true,
-                }
-              }
-            ],
-          })
+              'css-loader',
+              'postcss-loader',
+              "sass-loader",
+            ]
         },
         // 画像の処理について
         {
@@ -90,15 +79,15 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
-      extractTextPlugin,
+      new MiniCssExtractPlugin({filename: '../css/[name].css'}),
       new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery",
       }),
-      isProduction && new StatsPlugin('../../../stats.json', {
+      mode && new StatsPlugin('../../../stats.json', {
         chunkModules: true,
       }),
-      isProduction && new BundleAnalyzerPlugin(),
+      mode && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
     performance: {
       maxEntrypointSize: 400000

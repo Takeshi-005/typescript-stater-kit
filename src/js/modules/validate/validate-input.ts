@@ -1,7 +1,7 @@
 import returnInput from "./returnInput";
 import inputModel from "./inputModel";
 import * as Velocity from "velocity-animate";
-import { ANIMATE_DURATION } from "../../const";
+// import { ANIMATE_DURATION } from "../../const";
 
 /**
  * validateの[view]Classを実装
@@ -96,7 +96,7 @@ export default class Validation {
       ) {
         this.el.classList.add("is-error");
         Velocity.animate(this.el, "scroll", {
-          duration: ANIMATE_DURATION
+          duration: 700
         }).then(() => {});
       }
 
