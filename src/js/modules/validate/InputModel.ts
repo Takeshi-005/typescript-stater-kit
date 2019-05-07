@@ -6,7 +6,7 @@ export default class InputModel {
   private listeners: {};
   private attrs: any;
   public message: {};
-  private val: any;
+  public val: any;
   public target: {
     element: HTMLInputElement;
     event: string;
@@ -22,17 +22,19 @@ export default class InputModel {
     };
 
     this.attrs = {
-      // email: /^[a-zA-Z0-9]+$/,
+      // email: /^[a-zA-Z0-9\.!#\$%&'\*\+\/=\?\^_`\{\|\}\[\]\~\-@]+$/,
       email: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-      tel: /^([0-9]{9,12})$/,
+      tel: /^([0-9\-]{10,13})$/,
       number: /^[0-9]+$/,
+      zip: /^\d{3}[-]\d{4}$|^\d{3}[-]\d{2}$|^\d{3}$|^\d{5}$|^\d{7}$/,
       required: ""
     };
 
     this.message = {
-      email: "使用可能な文字で入力してください。",
-      tel: "半角の数字で正しく入力してください。",
+      email: "正しく入力してください。",
+      tel: "正しく入力してください。",
       number: "半角数字で入力してください。",
+      zip: "正しく入力してください。",
       required: "入力してください。"
     };
   }
@@ -71,7 +73,7 @@ export default class InputModel {
   private email(rule, key) {
     if (this.val === "") return;
 
-    if (this.dataProps.includes(key)) {
+    if (this.dataProps.indexOf(key) !== -1) {
       if (!this.val.match(rule)) {
         this.errors.push(key);
       }
@@ -82,9 +84,29 @@ export default class InputModel {
   private tel(rule, key) {
     if (this.val === "") return;
 
-    if (this.dataProps.includes(key)) {
-      if (this.target.event.includes("change")) {
-        const val = this.val.replace(/[^0-9]/g, "");
+    if (this.dataProps.indexOf(key) !== -1) {
+      if (this.target.event.indexOf("change") !== -1) {
+        const val = this.val.replace(/[０-９]/g, function(s) {
+          return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+        });
+        this.val = val;
+        this.target.element.querySelector("input").value = this.val;
+      }
+      if (!this.val.replace(/-/g, "").match(rule)) {
+        this.errors.push(key);
+      }
+    }
+  }
+
+  // 半角数字のバリデートチェック１
+  private number(rule, key) {
+    if (this.val === "") return;
+
+    if (this.dataProps.indexOf(key) !== -1) {
+      if (this.target.event.indexOf("change") !== -1) {
+        const val = this.val.replace(/[０-９]/g, function(s) {
+          return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+        });
         this.val = val;
         this.target.element.querySelector("input").value = this.val;
       }
@@ -95,13 +117,17 @@ export default class InputModel {
     }
   }
 
-  // 半角数字のバリデートチェック
-  private number(rule, key) {
+  // 郵便番号のバリデートチェック１
+  private zip(rule, key) {
     if (this.val === "") return;
 
-    if (this.dataProps.includes(key)) {
-      if (this.target.event.includes("change")) {
-        const val = this.val.replace(/[^0-9]/g, "");
+    if (this.dataProps.indexOf(key) !== -1) {
+      if (this.target.event.indexOf("change") !== -1) {
+        const val = this.val
+          .replace(/[‐−—ー]/g, "-")
+          .replace(/[０-９]/g, function(s) {
+            return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+          });
         this.val = val;
         this.target.element.querySelector("input").value = this.val;
       }
@@ -115,9 +141,12 @@ export default class InputModel {
   // 必須項目のチェック
   // サブミット時のみ
   private required(rule, key) {
-    if (!this.target.event.includes("submit")) return;
-    if (this.val === rule) {
-      this.errors.push(key);
+    // if (!this.target.event.includes("submit")) return;
+    if (this.target.event.indexOf("submit") === -1) return;
+    if (this.dataProps.indexOf(key) !== -1) {
+      if (this.val === rule) {
+        this.errors.push(key);
+      }
     }
   }
 }
