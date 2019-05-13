@@ -3,9 +3,9 @@
 /**
  * @returns {Class} New Constructor
  */
-[].map.call(document.querySelectorAll("[data-module]"), element => {
-  const keys = element.getAttribute("data-module").split(/\s+/);
-  const opts = element.getAttribute("data-options") || null;
+[].map.call(document.querySelectorAll('[data-module]'), element => {
+  const keys = element.getAttribute('data-module').split(/\s+/);
+  const opts = element.getAttribute('data-options') || null;
 
   keys.forEach(key => {
     const Module = require(`./${key}`).default;

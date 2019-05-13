@@ -6,12 +6,24 @@
   "plugins": [
     "@typescript-eslint"
     ],
+    "root": true,
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", "jsx", ".ts", ".tsx"]
+        }
+      },
+      "react": {
+        "version": "detect"
+      }
+    },
   "extends": [
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint"
   ],
   "rules": {
+    "import/no-unresolved": "off",
     "no-unused-vars": "error",
     "@typescript-eslint/camelcase": "off"
   }

@@ -1,5 +1,5 @@
-import * as Velocity from "velocity-animate";
-import { SCROLL_DURATION, OPACITY_DURATION } from "../const";
+import * as Velocity from 'velocity-animate';
+import {SCROLL_DURATION, OPACITY_DURATION} from '../const';
 
 /**
  * @export
@@ -19,13 +19,13 @@ export default class PageTop {
     this.eventBind();
   }
   private eventBind() {
-    this.pageTop.addEventListener("click", () => {
-      Velocity.animate(document.body, "scroll", {
-        duration: SCROLL_DURATION
+    this.pageTop.addEventListener('click', () => {
+      Velocity.animate(document.body, 'scroll', {
+        duration: SCROLL_DURATION,
       });
     });
 
-    $(window).on("load scroll", () => {
+    $(window).on('load scroll', () => {
       this.handleScroll();
     });
   }
@@ -36,28 +36,28 @@ export default class PageTop {
 
     if (
       scrollPos > PageTop.OFFSET &&
-      !this.pageTop.classList.contains("is-active")
+      !this.pageTop.classList.contains('is-active')
     ) {
-      this.pageTop.classList.add("is-active");
+      this.pageTop.classList.add('is-active');
       Velocity.animate(
         this.pageTop,
-        { opacity: 1 },
+        {opacity: 1},
         {
           duration: OPACITY_DURATION,
-          display: "block"
+          display: 'block',
         }
       ).then(() => {});
     } else if (
       scrollPos < PageTop.OFFSET &&
-      this.pageTop.classList.contains("is-active")
+      this.pageTop.classList.contains('is-active')
     ) {
-      this.pageTop.classList.remove("is-active");
+      this.pageTop.classList.remove('is-active');
       Velocity.animate(
         this.pageTop,
-        { opacity: 0 },
+        {opacity: 0},
         {
           duration: OPACITY_DURATION,
-          display: "none"
+          display: 'none',
         }
       ).then(() => {});
     }

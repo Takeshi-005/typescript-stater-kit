@@ -37,16 +37,17 @@ export default class Cookie {
       secure?: boolean;
     } = {}
   ) {
-    if (typeof key === "object") {
+    if (typeof key === 'object') {
       for (let name in key) {
         this.set(name, key[name]);
       }
+
       return this;
     }
 
     const expires = options.expires;
 
-    if (typeof expires === "number") {
+    if (typeof expires === 'number') {
       const days = options.expires;
       const t = (options.expires = new Date());
       t.setMilliseconds(t.getMilliseconds() + days * 864e5);
@@ -56,12 +57,12 @@ export default class Cookie {
 
     document.cookie =
       key +
-      "=" +
+      '=' +
       value +
-      (options.expires ? "; expires=" + options.expires.toUTCString() : "") +
-      (options.path ? "; path=" + options.path : "") +
-      (options.domain ? "; domain=" + options.domain : "") +
-      (options.secure ? "; secure" : "");
+      (options.expires ? '; expires=' + options.expires.toUTCString() : '') +
+      (options.path ? '; path=' + options.path : '') +
+      (options.domain ? '; domain=' + options.domain : '') +
+      (options.secure ? '; secure' : '');
 
     return this;
   }
@@ -87,15 +88,16 @@ export default class Cookie {
     for (let key of keys) {
       let matches = document.cookie.match(
         new RegExp(
-          "(?:^|; )" +
-            key.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-            "=([^;]*)"
+          '(?:^|; )' +
+            key.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') +
+            '=([^;]*)'
         )
       );
       result[key] = matches
         ? JSON.parse(decodeURIComponent(matches[1]))
         : undefined;
     }
+
     return keys.length == 1 ? result[keys[0]] : result;
   }
 
@@ -118,8 +120,9 @@ export default class Cookie {
    */
   public static remove(...keys: string[]) {
     for (let key of keys) {
-      this.set(key, "", { expires: -1 });
+      this.set(key, '', {expires: -1});
     }
+
     return this;
   }
 
@@ -137,9 +140,10 @@ export default class Cookie {
    */
   public static keys(): string[] {
     const keys = [];
-    for (let cookie of document.cookie.split("; ")) {
-      keys.push(cookie.split("=")[0]);
+    for (let cookie of document.cookie.split('; ')) {
+      keys.push(cookie.split('=')[0]);
     }
+
     return keys;
   }
 

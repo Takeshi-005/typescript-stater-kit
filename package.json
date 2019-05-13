@@ -7,16 +7,23 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "webpack --mode production ",
     "dev": "webpack --mode development",
-    "lint": "eslint \"./src/js/**/*.ts\" --quiet --fix; exit 0",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint \"./src/js/**/*.ts\" --quiet --fix; exit 0"
   },
   "lint-staged": {
-    "linters": {
-      "*.{ts,tsx}": [
-        "eslint --quiet --fix",
-        "git add"
-      ]
-    }
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --quiet --fix",
+      "git add"
+    ],
+    "*.css": [
+      "stylelint --fix",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   },
   "husky": {
     "hooks": {
@@ -57,11 +64,17 @@
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "postcss-loader": "3.0.0",
     "prettier": "1.17.0",
+    "prettier-stylelint": "0.4.2",
+    "pubsub-js": "1.7.0",
     "pug": "2.0.0",
     "pug-loader": "^2.4.0",
     "sass-loader": "7.1.0",
     "stats-webpack-plugin": "0.7.0",
     "style-loader": "0.23.1",
+    "stylelint": "10.0.1",
+    "stylelint-config-prettier": "5.1.0",
+    "stylelint-config-standard": "18.3.0",
+    "stylelint-order": "3.0.0",
     "terser-webpack-plugin": "1.2.3",
     "ts-loader": "5.4.6",
     "typescript": "3.4.5",

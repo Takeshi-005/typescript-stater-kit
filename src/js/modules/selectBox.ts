@@ -21,8 +21,8 @@ export default class SelectBox {
   private label: HTMLLabelElement;
 
   private constructor(el) {
-    this.select = el.querySelector(".js-select");
-    this.label = el.querySelector(".js-label");
+    this.select = el.querySelector('.js-select');
+    this.label = el.querySelector('.js-label');
     if (!this.select || !this.label) {
       return;
     }
@@ -35,14 +35,14 @@ export default class SelectBox {
   }
 
   private eventBind() {
-    this.select.addEventListener("change", () => {
+    this.select.addEventListener('change', () => {
       this.setLabelText();
     });
   }
 
   private setLabelText() {
     const value = this.select.options[this.select.selectedIndex].getAttribute(
-      "data-value"
+      'data-value'
     );
     this.label.innerText = value;
   }
