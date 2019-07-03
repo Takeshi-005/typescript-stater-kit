@@ -34,19 +34,51 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist/assets/js'),
       publicPath: '/assets/',
     },
-    resolve: {
-      // Add `.ts` and `.tsx` as a resolvable extension.
-      extensions: [".ts", ".tsx", ".js"]
+    // chunk設定
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendorModules: {
+                     test: /[\\/]node_modules[\\/]/,
+                    name: "client_vendors",
+                    chunks: "initial",
+                    reuseExistingChunk: true,
+                }
+            }
+        }
     },
+    resolve: {
+        extensions: [".js", ".ts", ".tsx"],
+        modules: [path.resolve("resources/js"), "node_modules"]
+
+    },
+    devtool: "source-map",
     module: {
       rules: [
-        // typescript
         {
-          test: /\.tsx?$/,
-          use: [
-            "ts-loader"
-          ].filter(Boolean),
-          exclude: /node_modules/
+          test: /\.(js|mjs|jsx|ts|tsx)$/,
+          loader: require.resolve('babel-loader'),
+          exclude: /node_modules/,
+          options: {
+            customize: require.resolve(
+              'babel-preset-react-app/webpack-overrides',
+            ),
+            // plugins: [
+            //   [
+            //     require.resolve('babel-plugin-named-asset-import'),
+            //     {
+            //       loaderMap: {
+            //         svg: {
+            //           ReactComponent: '@svgr/webpack?-svgo![path]',
+            //         },
+            //       },
+            //     },
+            //   ],
+            // ],
+            cacheDirectory: true,
+            cacheCompression: mode,
+            compact: mode,
+          },
         },
         {
             test: /\.css$/,
@@ -80,6 +112,22 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new MiniCssExtractPlugin({filename: '../css/[name].css'}),
+      new ForkTsCheckerWebpackPlugin({
+      async: false,
+      checkSyntacticErrors: true,
+      tsconfig: path.resolve(__dirname, "tsconfig.json"),
+      reportFiles: [
+          '**',
+          '!**/*.json',
+          '!**/__tests__/**',
+          '!**/?(*.)(spec|test).*',
+          '!**/src/setupProxy.*',
+          '!**/src/setupTests.*',
+      ],
+      watch: path.resolve(__dirname, "resources/js"),
+      silent: true,
+      // formatter: typescriptFormatter,
+      }),
       new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery",
