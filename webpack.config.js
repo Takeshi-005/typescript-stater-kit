@@ -80,10 +80,6 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new MiniCssExtractPlugin({filename: '../css/[name].css'}),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-      }),
       mode && new StatsPlugin('../../../stats.json', {
         chunkModules: true,
       }),

@@ -85,8 +85,6 @@
     "webpack-dev-server": "3.2.1"
   },
   "dependencies": {
-    "@types/jquery": "3.3.29",
-    "jquery": "3.4.1",
     "lint-staged": "8.1.5",
     "mdn-polyfills": "5.16.0",
     "slick-carousel": "1.8.1",
