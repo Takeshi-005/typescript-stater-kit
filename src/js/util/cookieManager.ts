@@ -83,7 +83,7 @@ export default class Cookie {
    * // -> {one: 1, two: 2}
    */
   public static get(...keys: string[]): any {
-    const result = {};
+    const result: {[key: string]: string} = {};
 
     for (let key of keys) {
       let matches = document.cookie.match(
