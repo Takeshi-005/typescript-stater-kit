@@ -1,26 +1,30 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist/assets/js",
-      // "noImplicitAny": true,
-      "lib": [
-            "dom",
-            "es7",
-            "es2015.promise",
-            "es5"
-      ],
-      "module": "commonjs",
-      "target": "es5",
-      "jsx": "react",
-      // "strict": true,
-      "allowJs": true,
-      "sourceMap": true
-    },
-    "include": [
-      "src/js/*",
-      "src/js/**/*",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "exclude": [
-      "node_modules",
-      "**/*.spec.ts"
-    ]
-  }
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "outDir": "build/",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
