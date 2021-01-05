@@ -96,7 +96,7 @@
     "webpack-dev-server": "3.10.3"
   },
   "dependencies": {
-    "axios": "^0.18",
+    "axios": "^0.21",
     "lint-staged": "8.1.5",
     "velocity-animate": "1.5.2"
   },
