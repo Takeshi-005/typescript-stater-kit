@@ -97,7 +97,7 @@
   },
   "dependencies": {
     "axios": "^0.18",
-    "lint-staged": "8.1.5",
+    "lint-staged": "13.1.0",
     "velocity-animate": "1.5.2"
   },
   "browserslist": [
